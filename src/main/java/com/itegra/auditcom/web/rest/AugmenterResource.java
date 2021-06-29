@@ -32,14 +32,21 @@ public class AugmenterResource {
 
     /**
      * POST augmenter
+     *
+     * Schedule pegar de 100 em 100 durante 5 minutos
      */
     @PostMapping("/augmenter")
     public List<NotaFiscalEntradaDTO> augmenter()
         throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        // entrar minio
         String accessKey = "minioadmin";
         String secretKey = "minioadmin";
 
         MinioClient minioClient = MinioClient.builder().endpoint("http://127.0.0.1:9000").credentials(accessKey, secretKey).build();
+
+        // criar bucket notas-json-aug
+
+        // percorrer notas-json
 
         Iterable<Result<Item>> results = minioClient.listObjects(ListObjectsArgs.builder().bucket("notas-json").build());
 
