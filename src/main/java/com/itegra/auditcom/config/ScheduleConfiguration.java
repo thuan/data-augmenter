@@ -3,7 +3,6 @@ package com.itegra.auditcom.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itegra.auditcom.domain.NotaFiscalEntradaDTO;
 import com.itegra.auditcom.service.QueueInputService;
-import com.itegra.auditcom.service.RequestQueueInputService;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -15,7 +14,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,13 +28,16 @@ public class ScheduleConfiguration {
 
     private static final String NOTAS = "notas-json";
 
-    @Autowired
-    private QueueInputService queueInputService;
+    private final QueueInputService queueInputService;
+
+    public ScheduleConfiguration(QueueInputService queueInputService) {
+        this.queueInputService = queueInputService;
+    }
 
     //@Scheduled(cron = "0 15 10 15 * ?")
-    @Scheduled(fixedRate = 50000)
+    @Scheduled(fixedDelayString = "PT15M")
     public void scheduleFixedRateTask() {
-        log.info("Fixed rate task - " + System.currentTimeMillis() / 1000);
+        log.info("Scheduled Fixed rate task - " + System.currentTimeMillis() / 1000);
 
         MinioClient minioClient = getBuild();
 
