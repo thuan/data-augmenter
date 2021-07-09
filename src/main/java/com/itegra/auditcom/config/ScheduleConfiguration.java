@@ -28,15 +28,9 @@ public class ScheduleConfiguration {
 
     private static final String NOTAS = "notas-json";
 
-    private final QueueInputService queueInputService;
-
-    public ScheduleConfiguration(QueueInputService queueInputService) {
-        this.queueInputService = queueInputService;
-    }
-
     //@Scheduled(cron = "0 15 10 15 * ?")
     @Scheduled(fixedDelayString = "PT15M")
-    public void scheduleFixedRateTask() {
+    public void scheduleFixedDelayTask() {
         log.info("Scheduled Fixed rate task - " + System.currentTimeMillis() / 1000);
 
         MinioClient minioClient = getBuild();
@@ -56,7 +50,6 @@ public class ScheduleConfiguration {
                     ObjectMapper mapper = new ObjectMapper();
                     NotaFiscalEntradaDTO notaFiscalEntradaDTO = mapper.readValue(json, NotaFiscalEntradaDTO.class);
                     notaFiscalEntradaDTO.setAugment("data-augment-ok");
-                    //queueInputService.addInput(notaFiscalEntradaDTO);
                     augmentBucket(minioClient, notaFiscalEntradaDTO);
                 }
                 stream.close();
