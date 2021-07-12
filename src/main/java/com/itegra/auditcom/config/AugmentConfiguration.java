@@ -2,7 +2,6 @@ package com.itegra.auditcom.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itegra.auditcom.domain.NotaFiscalEntradaDTO;
-import com.itegra.auditcom.service.QueueInputService;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -20,9 +19,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @Configuration
 @EnableScheduling
-public class ScheduleConfiguration {
+public class AugmentConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(ScheduleConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(AugmentConfiguration.class);
 
     private static final String AUGMENTER = "notas-augmenter";
 
