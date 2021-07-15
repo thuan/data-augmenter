@@ -48,6 +48,11 @@ public class AugmentConfiguration {
                     String json = new String(buf, 0, bytesRead, StandardCharsets.UTF_8);
                     ObjectMapper mapper = new ObjectMapper();
                     NotaFiscalEntradaDTO notaFiscalEntradaDTO = mapper.readValue(json, NotaFiscalEntradaDTO.class);
+                    // 1 Passo - Comunicao via feign para a api dos Clientes -> Auditcom
+                    // 2 Passo - colocar permitall() dentro do Servico (/api/empresa/cliente)
+                    // 3 passo - Codificar o NotaFiscalEntradaDTO com o DTO dos Clientes - Empresas
+                    // 4 Passo - Criar um metodo que vai fazer o augment
+                    augmentData(notaFiscalEntradaDTO);
                     notaFiscalEntradaDTO.setAugment("data-augment-ok");
                     augmentBucket(minioClient, notaFiscalEntradaDTO);
                 }
@@ -58,6 +63,8 @@ public class AugmentConfiguration {
             }
         }
     }
+
+    private void augmentData(NotaFiscalEntradaDTO notaFiscalEntradaDTO) {}
 
     private void augmentBucket(MinioClient minioClient, NotaFiscalEntradaDTO notaFiscalEntradaDTO)
         throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
